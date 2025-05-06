@@ -75,10 +75,25 @@ static float angles[N_OBJECTS];    // individual rotation angles
 static bool map_obj[N_OBJECTS];
 
 // object transformations
-static glm::vec3 quad_s( 1.75f,  1.75f,  1.75f );
-static glm::vec3 quad_x( -1.25f, 0.5f, -1.5f );
-static glm::vec3 cyl_s( 1.5f,  1.5f,  1.5f );
-static glm::vec3 cyl_x( 1.0f,  0.5f, -1.5f );
+// static glm::vec3 quad_s( 1.75f,  1.75f,  1.75f );
+// static glm::vec3 quad_x( -1.25f, 0.5f, -1.5f );
+// static glm::vec3 cyl_s( 1.5f,  1.5f,  1.5f );
+// static glm::vec3 cyl_x( 1.0f,  0.5f, -1.5f );
+
+// New transformations
+glm::vec3 road_s(20.0f, 1.0f, 20.0f);
+glm::vec3 road_x(0.0f, -0.01f, 0.0f); 
+
+glm::vec3 silo_s(0.5f, 3.0f, 0.5f);
+glm::vec3 silo_x(-2.0f, 0.0f, -2.0f);
+
+glm::vec3 barn_s(2.0f, 1.5f, 2.0f);
+glm::vec3 barn_x(0.0f, 0.0f, -2.0f);
+
+glm::vec3 roof_s(2.2f, 1.0f, 2.2f);
+glm::vec3 roof_x(0.0f, 2.0f, -2.0f);
+
+
 
 // light animation
 static bool animateLight = false;
@@ -118,9 +133,17 @@ GLFWwindow *w_window;
 ///
 static void createImage( Canvas &C )
 {
-	createObject( C, Quad,     buffers[Quad] );
-	createObject( C, Cylinder, buffers[Cylinder] );
-	createObject( C, Discs,    buffers[Discs] );
+    // Dont draw these
+	// createObject( C, Quad,     buffers[Quad] );
+	// createObject( C, Cylinder, buffers[Cylinder] );
+	// createObject( C, Discs,    buffers[Discs] );
+
+    createObject( C, SiloBody, buffers[SiloBody] );
+    createObject( C, SiloRoof,   buffers[SiloRoof] );
+    createObject( C, MainBarnBody, buffers[MainBarnBody] );
+    createObject( C, MainBarnRoof, buffers[MainBarnRoof] );
+    createObject( C, AltBarnBody,     buffers[AltBarnBody] );
+    createObject( C, Floor,     buffers[Floor]);
 }
 
 ///
@@ -128,37 +151,38 @@ static void createImage( Canvas &C )
 ///
 /// @param obj  the object being rotated
 ///
-static void rotate( int obj, float amt ) {
-	angles[obj] += amt;
-	if( angles[obj] >= 360.0f ) {
-		angles[obj] = 0.0f;
-	}
-}
+// static void rotate( int obj, float amt ) {
+// 	angles[obj] += amt;
+// 	if( angles[obj] >= 360.0f ) {
+// 		angles[obj] = 0.0f;
+// 	}
+// }
 
 ///
 /// Animation routine
 ///
+// SHOULD NOT BE USED
 static void animate( void ) {
 
-	if( animating[Quad] ) {
-		rotate( Quad, 2.0f );
-		updateDisplay = true;
-	}
+	// if( animating[Quad] ) {
+	// 	rotate( Quad, 2.0f );
+	// 	updateDisplay = true;
+	// }
 
-	if( animating[Cylinder] ) {
-		rotate( Cylinder, 1.0f );
-		rotate( Discs, 1.0f );
-		updateDisplay = true;
-	}
+	// if( animating[Cylinder] ) {
+	// 	rotate( Cylinder, 1.0f );
+	// 	rotate( Discs, 1.0f );
+	// 	updateDisplay = true;
+	// }
 
-	if( animateLight ) {
-		if( (delta > 0.0f && lightpos.x >= lightMax) ||
-			(delta < 0.0f && lightpos.x <= lightMin) ) {
-			delta *= -1.0f;
-		}
-		lightpos.x += delta;
-		updateDisplay = true;
-	}
+	// if( animateLight ) {
+	// 	if( (delta > 0.0f && lightpos.x >= lightMax) ||
+	// 		(delta < 0.0f && lightpos.x <= lightMin) ) {
+	// 		delta *= -1.0f;
+	// 	}
+	// 	lightpos.x += delta;
+	// 	updateDisplay = true;
+	// }
 }
 
 //
@@ -196,28 +220,28 @@ static void keyboard( GLFWwindow *window, int key, int scan,
 
 	// animation control
 
-	case GLFW_KEY_A:    // start/stop all object animation
-		// are we currently animating anything?
-		any_anim = false;
-		for( int i = 0; i < N_OBJECTS; ++i ) {
-			any_anim = any_anim || animating[i];
-		}
-		// invert the condition
-		any_anim = !any_anim;
-		// propogate it
-		for( int i = 0; i < N_OBJECTS; ++i ) {
-			animating[i] = any_anim;
-		}
-		break;
+	// case GLFW_KEY_A:    // start/stop all object animation
+	// 	// are we currently animating anything?
+	// 	any_anim = false;
+	// 	for( int i = 0; i < N_OBJECTS; ++i ) {
+	// 		any_anim = any_anim || animating[i];
+	// 	}
+	// 	// invert the condition
+	// 	any_anim = !any_anim;
+	// 	// propogate it
+	// 	for( int i = 0; i < N_OBJECTS; ++i ) {
+	// 		animating[i] = any_anim;
+	// 	}
+	// 	break;
 
-	case GLFW_KEY_Q: // start/stop animating the quad
-		animating[Quad] = !animating[Quad];
-		break;
+	// case GLFW_KEY_Q: // start/stop animating the quad
+	// 	animating[Quad] = !animating[Quad];
+	// 	break;
 
-	case GLFW_KEY_C: // start/stop animating the cylinder and discs
-		animating[Cylinder] = !animating[Cylinder];
-		animating[Discs] = !animating[Discs];
-		break;
+	// case GLFW_KEY_C: // start/stop animating the cylinder and discs
+	// 	animating[Cylinder] = !animating[Cylinder];
+	// 	animating[Discs] = !animating[Discs];
+	// 	break;
 
 	case GLFW_KEY_L:    // start/stop animating the light
 		animateLight = !animateLight;
@@ -235,11 +259,11 @@ static void keyboard( GLFWwindow *window, int key, int scan,
 
 	// print out potentially useful information
 
-	case GLFW_KEY_R: // rotation angles
-		cerr << "Rotation: quad " << angles[Quad]
-			 << ", cyl/disc " << angles[Cylinder]
-			 << endl;
-		break;
+	// case GLFW_KEY_R: // rotation angles
+	// 	cerr << "Rotation: quad " << angles[Quad]
+	// 		 << ", cyl/disc " << angles[Cylinder]
+	// 		 << endl;
+	// 	break;
 
 	case GLFW_KEY_P: // light position
 		cerr << "Light is at (" << lightpos[0] << "," << lightpos[1]
@@ -248,14 +272,14 @@ static void keyboard( GLFWwindow *window, int key, int scan,
 
 	// Reset parameters
 
-	case GLFW_KEY_1: // reset all object rotations
-		angles[Quad] = angles[Cylinder]
-					 = angles[Discs]
-					 = 0.0f;
-		animating[Quad] = animating[Cylinder]
-						= animating[Discs]
-						= false;
-		break;
+	// case GLFW_KEY_1: // reset all object rotations
+	// 	angles[Quad] = angles[Cylinder]
+	// 				 = angles[Discs]
+	// 				 = 0.0f;
+	// 	animating[Quad] = animating[Cylinder]
+	// 					= animating[Discs]
+	// 					= false;
+	// 	break;
 
 	case GLFW_KEY_2: // reset light position
 		lightpos[0] = lpDefault[0];
@@ -271,17 +295,12 @@ static void keyboard( GLFWwindow *window, int key, int scan,
 		cout << "=========   =======================" << endl;
 		cout << "ESC, x, X   Terminate the program" << endl;
 		cout << "  h, H      Print this message" << endl;
-		cout << "  a, A      Toggle all object animation" << endl;
-		cout << "  q, Q      Toggle quad animation" << endl;
-		cout << "  c, C      Toggle cylinder animation" << endl;
 		cout << "  l, L      Toggle light animation" << endl;
 		cout << "  i, I      Move light 'into' the scene"
 			<< " (toward the objects)" << endl;
 		cout << "  o, O      Move light 'out' from the scene"
 			<< " (away from the objects)" << endl;
 		cout << "  p, P      Print light position" << endl;
-		cout << "  r, R      Print rotation angles" << endl;
-		cout << "   1        Reset all objects, stop animation" << endl;
 		cout << "   2        Reset light position, stop animation" << endl;
 		// return without updating the display
 		return;
@@ -304,9 +323,9 @@ void setTitle( void ) {
 	char buf[128];
 
 	strcpy( buf, "Texture mapping:" );
-	if( map_obj[Quad] )     strcat( buf, " Quad" );
-	if( map_obj[Cylinder] ) strcat( buf, " Cylinder" );
-	if( map_obj[Discs] )    strcat( buf, " Discs" );
+	// if( map_obj[Quad] )     strcat( buf, " Quad" );
+	// if( map_obj[Cylinder] ) strcat( buf, " Cylinder" );
+	// if( map_obj[Discs] )    strcat( buf, " Discs" );
 
 	glfwSetWindowTitle( w_window, buf );
 }
@@ -326,7 +345,7 @@ static void display( void )
 	checkErrors( "display init" );
 
 	// draw the individual objects
-	for( int obj = Quad; obj < N_OBJECTS; ++obj ) {
+	for( int obj = SiloBody; obj < N_OBJECTS; ++obj ) {
 
 		// select the proper shader program
 		GLuint program = map_obj[obj] ? texture : flat;
@@ -350,14 +369,27 @@ static void display( void )
 
 		// send all the transformation data
 		switch( obj ) {
-		case Quad:
-			ang = glm::vec3( 0.0f, angles[Quad], 0.0f );
-			setTransforms( program, quad_s, ang, quad_x );
+        case SiloBody:
+            setTransforms( program, silo_s, ang, silo_x );
 			break;
-		case Cylinder:  // FALL THROUGH
-		case Discs:
-			setTransforms( program, cyl_s, ang, cyl_x );
+        case SiloRoof:
+            //TODO
+            setTransforms( program, cyl_s, ang, cyl_x );
 			break;
+        case MainBarnBody:
+            setTransforms( program, barn_s, ang, barn_x );
+			break;
+        case MainBarnRoof:
+            setTransforms( program, roof_s, ang, roof_x );
+			break;
+        case AltBarnBody:
+            //TODO
+            setTransforms( program, cyl_s, ang, cyl_x );
+			break;
+        case Floor:
+            setTransforms( program, roof_s, ang, roof_x );
+			break;
+
 		}
 
 		checkErrors( "display xforms" );

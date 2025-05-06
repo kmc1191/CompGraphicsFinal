@@ -39,10 +39,12 @@ using namespace std;
 
 // object names (must match the sequence in Models.h)
 const char *objects[ N_OBJECTS ] = {
-	"Quad"
-	, "Cylinder"
-        , "Sphere"      //TODO
-	, "Discs"
+	"SiloBody"
+    , "SiloRoof"
+    , "MainBarnBody"
+    , "MainBarnRoof"
+    , "AltBarnBody"
+    , "Floor"
 };
 
 //
@@ -147,6 +149,30 @@ void makeSphere( Canvas &C )
 }
 
 ///
+/// makeCone() - create the cone body
+///
+void makeCone( Canvas &C )
+{
+	
+}
+
+///
+/// makeTriangularPrism() - create a triangular prism????
+///
+void makeTriangularPrism( Canvas &C )
+{
+	
+}
+
+///
+/// makeCube() - create a cube
+///
+void makeCube( Canvas &C )
+{
+	
+}
+
+///
 /// makeDiscs() - create the cylinder discs
 ///
 static void makeDiscs( Canvas &C )
@@ -229,10 +255,14 @@ void createObject( Canvas &C, Object obj, BufferSet &buf )
 
 	// create the specified object
 	switch( obj ) {
-	case Quad:      makeQuad( C );      break;
-	case Cylinder:  makeCylinder( C );  break;
-	case Discs:     makeDiscs( C );     break;
-        case Sphere:    makeSphere( C );    break;
+
+    case SiloBody:      makeCylinder( C );  break;
+    case SiloRoof:      makeSphere( C );    break;
+    case MainBarnBody:  makeCylinder( C );  break;
+    case MainBarnRoof:  makeCone( C );      break;
+    case AltBarnBody:   makeCube( C );      break;
+    case Floor:         makeQuad( C );      break;
+
 	default:
 		cerr << "createObject(" << obj << ") - unknown object type" << endl;
 		return;

@@ -37,7 +37,6 @@ static GLfloat specExp[N_OBJECTS] = {
 	50.0f,  // Quad
 	20.0f,  // Cylinder
 	20.0f,   // Discs
-        20.0f   // Discs
 };
 
 // These variables are used in the framework only when doing Flat shading
@@ -197,39 +196,39 @@ void setMaterials( GLuint program, Object obj, bool usingTextures )
 	// on the object being drawn at the moment.
 	//
 
-	if( !usingTextures ) {
+	// if( !usingTextures ) {
 
-		///////////////////////////////////////////////////////////
-		// THIS CODE IS USED ONLY IF TEXTURE MAPPING IS ***NOT***
-		// BEING DONE ON THIS OBJECT
-		///////////////////////////////////////////////////////////
+	// 	///////////////////////////////////////////////////////////
+	// 	// THIS CODE IS USED ONLY IF TEXTURE MAPPING IS ***NOT***
+	// 	// BEING DONE ON THIS OBJECT
+	// 	///////////////////////////////////////////////////////////
 
-		// ambient and diffuse vary from one object to another
-		GLint dloc = getUniformLoc( program, "diffuseColor" );
-		GLint aloc = getUniformLoc( program, "ambientColor" );
+	// 	// ambient and diffuse vary from one object to another
+	// 	GLint dloc = getUniformLoc( program, "diffuseColor" );
+	// 	GLint aloc = getUniformLoc( program, "ambientColor" );
 
-		switch( obj ) {
-		case Quad:
-			if( aloc >= 0 ) {
-				glUniform4fv( aloc, 1, glm::value_ptr(quad_ambdiffuse) );
-			}
-			if( dloc >= 0 ) {
-				glUniform4fv( dloc, 1, glm::value_ptr(quad_ambdiffuse) );
-			}
-			break;
-		case Cylinder: // FALL THROUGH
-		case Discs:
-			if( aloc >= 0 ) {
-				glUniform4fv( aloc, 1, glm::value_ptr(cyl_ambient) );
-			}
-			if( dloc >= 0 ) {
-				glUniform4fv( dloc, 1, glm::value_ptr(cyl_diffuse) );
-			}
-			break;
-		}
+	// 	switch( obj ) {
+	// 	case Quad:
+	// 		if( aloc >= 0 ) {
+	// 			glUniform4fv( aloc, 1, glm::value_ptr(quad_ambdiffuse) );
+	// 		}
+	// 		if( dloc >= 0 ) {
+	// 			glUniform4fv( dloc, 1, glm::value_ptr(quad_ambdiffuse) );
+	// 		}
+	// 		break;
+	// 	case Cylinder: // FALL THROUGH
+	// 	case Discs:
+	// 		if( aloc >= 0 ) {
+	// 			glUniform4fv( aloc, 1, glm::value_ptr(cyl_ambient) );
+	// 		}
+	// 		if( dloc >= 0 ) {
+	// 			glUniform4fv( dloc, 1, glm::value_ptr(cyl_diffuse) );
+	// 		}
+	// 		break;
+	// 	}
 
-		return;
-	}
+	// 	return;
+	// }
 
 	///////////////////////////////////////////////////////////
 	// CODE FROM THIS POINT ON WILL BE USED ONLY IF TEXTURE
@@ -239,17 +238,24 @@ void setMaterials( GLuint program, Object obj, bool usingTextures )
 	// Set the specular exponent for the object
 	loc  = getUniformLoc( program, "specExp" );
 	switch( obj ) {
-	case Quad:
-		glUniform1f( loc, specExp[Quad] );
+    //TODO
+    case SiloBody:
+        glUniform1f( loc, specExp[1] );
 		break;
-	case Cylinder:
-		glUniform1f( loc, specExp[Cylinder] );
+    case SiloRoof:
+        glUniform1f( loc, specExp[2] );
 		break;
-	case Discs:
-		glUniform1f( loc, specExp[Discs] );
+    case MainBarnBody:
+        glUniform1f( loc, specExp[1] );
 		break;
-        case Sphere:
-		glUniform1f( loc, specExp[Sphere] );
+    case MainBarnRoof:
+        glUniform1f( loc, specExp[0] );
+		break;
+    case AltBarnBody:
+        glUniform1f( loc, specExp[0] );
+		break;
+    case Floor:
+        glUniform1f( loc, specExp[0] );
 		break;
 	}
 
@@ -265,73 +271,103 @@ void setMaterials( GLuint program, Object obj, bool usingTextures )
         GLint texLoc;
 
         switch( obj ) {
-        case Quad:
-                //Front texture for disk
+            case SiloBody:
                 glActiveTexture(GL_TEXTURE0);  // Texture unit 0
-                glBindTexture(GL_TEXTURE_2D, quadFrontTexture);  // Front texture
-                texLoc = getUniformLoc(program, "mainTex");
-                if (texLoc >= 0) {
-                        glUniform1i(texLoc, 0);  // Set the sampler to texture unit 0
-                }
+                    glBindTexture(GL_TEXTURE_2D, dirtyTileTexture);  // Front texture
+                    texLoc = getUniformLoc(program, "mainTex");
+                    if (texLoc >= 0) {
+                            glUniform1i(texLoc, 0);  // Set the sampler to texture unit 0
+                    }
 
-                //Back Texture for disk
-                glActiveTexture(GL_TEXTURE1);  // Texture unit 1
-                glBindTexture(GL_TEXTURE_2D, quadBackTexture);  // Back texture
-                texLoc = getUniformLoc(program, "backTex");
-                if (texLoc >= 0) {
-                glUniform1i(texLoc, 1);  // Set the sampler to texture unit 1
-                }
-                break;
-
-        case Cylinder:
+                    //Send same texture for back
+                    glActiveTexture(GL_TEXTURE1);  // Texture unit 1
+                    glBindTexture(GL_TEXTURE_2D, dirtyTileTexture);  // Back texture
+                    texLoc = getUniformLoc(program, "backTex");
+                    if (texLoc >= 0) {
+                    glUniform1i(texLoc, 1);  // Set the sampler to texture unit 1
+                    }
+                    break;
+            case SiloRoof:
                 glActiveTexture(GL_TEXTURE0);  // Texture unit 0
-                glBindTexture(GL_TEXTURE_2D, cylinderTexture);  // Front texture
-                texLoc = getUniformLoc(program, "mainTex");
-                if (texLoc >= 0) {
-                        glUniform1i(texLoc, 0);  // Set the sampler to texture unit 0
-                }
+                    glBindTexture(GL_TEXTURE_2D, metalRoofTexture);  // Front texture
+                    texLoc = getUniformLoc(program, "mainTex");
+                    if (texLoc >= 0) {
+                            glUniform1i(texLoc, 0);  // Set the sampler to texture unit 0
+                    }
 
-                //Send same texture for back
-                glActiveTexture(GL_TEXTURE1);  // Texture unit 1
-                glBindTexture(GL_TEXTURE_2D, cylinderTexture);  // Back texture
-                texLoc = getUniformLoc(program, "backTex");
-                if (texLoc >= 0) {
-                glUniform1i(texLoc, 1);  // Set the sampler to texture unit 1
-                }
-                break;
-
-        case Discs:
+                    //Send same texture for back
+                    glActiveTexture(GL_TEXTURE1);  // Texture unit 1
+                    glBindTexture(GL_TEXTURE_2D, metalRoofTexture);  // Back texture
+                    texLoc = getUniformLoc(program, "backTex");
+                    if (texLoc >= 0) {
+                    glUniform1i(texLoc, 1);  // Set the sampler to texture unit 1
+                    }
+                    break;
+            case MainBarnBody:
                 glActiveTexture(GL_TEXTURE0);  // Texture unit 0
-                glBindTexture(GL_TEXTURE_2D, discTexture);  // Front texture
-                texLoc = getUniformLoc(program, "mainTex");
-                if (texLoc >= 0) {
-                        glUniform1i(texLoc, 0);  // Set the sampler to texture unit 0
-                }
+                    glBindTexture(GL_TEXTURE_2D, brickTexture);  // Front texture
+                    texLoc = getUniformLoc(program, "mainTex");
+                    if (texLoc >= 0) {
+                            glUniform1i(texLoc, 0);  // Set the sampler to texture unit 0
+                    }
 
-                //Send same texture for back
-                glActiveTexture(GL_TEXTURE1);  // Texture unit 1
-                glBindTexture(GL_TEXTURE_2D, discTexture);  // Back texture
-                texLoc = getUniformLoc(program, "backTex");
-                if (texLoc >= 0) {
-                glUniform1i(texLoc, 1);  // Set the sampler to texture unit 1
-                }
-                break;
-        case Sphere:
+                    //Send same texture for back
+                    glActiveTexture(GL_TEXTURE1);  // Texture unit 1
+                    glBindTexture(GL_TEXTURE_2D, brickTexture);  // Back texture
+                    texLoc = getUniformLoc(program, "backTex");
+                    if (texLoc >= 0) {
+                    glUniform1i(texLoc, 1);  // Set the sampler to texture unit 1
+                    }
+                    break;
+            case MainBarnRoof:
                 glActiveTexture(GL_TEXTURE0);  // Texture unit 0
-                glBindTexture(GL_TEXTURE_2D, metalRoofTexture);  // Front texture
-                texLoc = getUniformLoc(program, "mainTex");
-                if (texLoc >= 0) {
-                        glUniform1i(texLoc, 0);  // Set the sampler to texture unit 0
-                }
+                    glBindTexture(GL_TEXTURE_2D, roofTexture);  // Front texture
+                    texLoc = getUniformLoc(program, "mainTex");
+                    if (texLoc >= 0) {
+                            glUniform1i(texLoc, 0);  // Set the sampler to texture unit 0
+                    }
 
-                //Send same texture for back
-                glActiveTexture(GL_TEXTURE1);  // Texture unit 1
-                glBindTexture(GL_TEXTURE_2D, metalRoofTexture);  // Back texture
-                texLoc = getUniformLoc(program, "backTex");
-                if (texLoc >= 0) {
-                glUniform1i(texLoc, 1);  // Set the sampler to texture unit 1
-                }
-                break;
+                    //Send same texture for back
+                    glActiveTexture(GL_TEXTURE1);  // Texture unit 1
+                    glBindTexture(GL_TEXTURE_2D, roofTexture);  // Back texture
+                    texLoc = getUniformLoc(program, "backTex");
+                    if (texLoc >= 0) {
+                    glUniform1i(texLoc, 1);  // Set the sampler to texture unit 1
+                    }
+                    break;
+            case AltBarnBody:
+                glActiveTexture(GL_TEXTURE0);  // Texture unit 0
+                    glBindTexture(GL_TEXTURE_2D, redWoodTexture);  // Front texture
+                    texLoc = getUniformLoc(program, "mainTex");
+                    if (texLoc >= 0) {
+                            glUniform1i(texLoc, 0);  // Set the sampler to texture unit 0
+                    }
+
+                    //Send same texture for back
+                    glActiveTexture(GL_TEXTURE1);  // Texture unit 1
+                    glBindTexture(GL_TEXTURE_2D, redWoodTexture);  // Back texture
+                    texLoc = getUniformLoc(program, "backTex");
+                    if (texLoc >= 0) {
+                    glUniform1i(texLoc, 1);  // Set the sampler to texture unit 1
+                    }
+                    break;
+            case Floor:
+                glActiveTexture(GL_TEXTURE0);  // Texture unit 0
+                    glBindTexture(GL_TEXTURE_2D, roadTexture);  // Front texture
+                    texLoc = getUniformLoc(program, "mainTex");
+                    if (texLoc >= 0) {
+                            glUniform1i(texLoc, 0);  // Set the sampler to texture unit 0
+                    }
+
+                    //Send same texture for back
+                    glActiveTexture(GL_TEXTURE1);  // Texture unit 1
+                    glBindTexture(GL_TEXTURE_2D, roadTexture);  // Back texture
+                    texLoc = getUniformLoc(program, "backTex");
+                    if (texLoc >= 0) {
+                    glUniform1i(texLoc, 1);  // Set the sampler to texture unit 1
+                    }
+                    break;
         }
+
 
 }

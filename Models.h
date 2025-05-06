@@ -21,10 +21,12 @@
 //
 typedef
 	enum objects_e {
-		Quad = 0
-		, Cylinder
-		, Discs
-                , Sphere
+		SiloBody = 0
+        , SiloRoof
+        , MainBarnBody
+        , MainBarnRoof
+        , AltBarnBody
+        , Floor
 		// Sentinel gives us the number of shapes
 		, N_OBJECTS
 	} Object;
