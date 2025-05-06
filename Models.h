@@ -26,6 +26,9 @@ typedef
         , MainBarnBody
         , MainBarnRoof
         , AltBarnBody
+        , AltBarnRoof
+        , MiniBarnBody
+        , MiniBarnRoof
         , Floor
 		// Sentinel gives us the number of shapes
 		, N_OBJECTS

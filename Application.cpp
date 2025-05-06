@@ -83,16 +83,33 @@ static bool map_obj[N_OBJECTS];
 // New transformations
 glm::vec3 road_s(20.0f, 1.0f, 20.0f);
 glm::vec3 road_x(0.0f, -0.01f, 0.0f); 
+glm::vec3 road_r(-90.0f, 0.0f, 0.0f);
 
-glm::vec3 silo_s(0.5f, 3.0f, 0.5f);
-glm::vec3 silo_x(-2.0f, 0.0f, -2.0f);
+glm::vec3 siloBody_s(0.5f, 3.0f, 0.5f);
+glm::vec3 siloBody_x(-2.0f, 0.0f, -2.0f);
 
-glm::vec3 barn_s(2.0f, 1.5f, 2.0f);
-glm::vec3 barn_x(0.0f, 0.0f, -2.0f);
+glm::vec3 siloRoof_s(0.5f, 3.0f, 0.5f);
+glm::vec3 siloRoof_x(-2.0f, 0.0f, -2.0f);
 
-glm::vec3 roof_s(2.2f, 1.0f, 2.2f);
-glm::vec3 roof_x(0.0f, 2.0f, -2.0f);
+glm::vec3 mainBarnBody_s(2.0f, 1.5f, 2.0f);
+glm::vec3 mainBarnBody_x(0.0f, 0.0f, -2.0f);
 
+glm::vec3 mainBarnRoof_s(2.2f, 1.0f, 2.2f);
+glm::vec3 mainBarnRoof_x(0.0f, 2.0f, -2.0f);
+
+glm::vec3 altBarnBody_s(2.0f, 1.5f, 2.0f);
+glm::vec3 altBarnBody_x(0.0f, 0.0f, -2.0f);
+
+glm::vec3 altBarnRoof_s(2.2f, 1.0f, 2.2f);
+glm::vec3 altBarnRoof_x(0.0f, 2.0f, -2.0f);
+
+glm::vec3 miniBarnBody_s(2.0f, 1.5f, 2.0f);
+glm::vec3 miniBarnBody_x(0.0f, 0.0f, -2.0f);
+
+glm::vec3 miniBarnRoof_s(2.2f, 1.0f, 2.2f);
+glm::vec3 miniBarnRoof_x(0.0f, 2.0f, -2.0f);
+
+// ALL ABOVE IS TODO!!!
 
 
 // light animation
@@ -142,7 +159,10 @@ static void createImage( Canvas &C )
     createObject( C, SiloRoof,   buffers[SiloRoof] );
     createObject( C, MainBarnBody, buffers[MainBarnBody] );
     createObject( C, MainBarnRoof, buffers[MainBarnRoof] );
-    createObject( C, AltBarnBody,     buffers[AltBarnBody] );
+    createObject( C, AltBarnBody, buffers[AltBarnBody] );
+    ceateObject( C, AltBarnRoof, buffers[AltBarnRoof] );
+    ceateObject( C, MiniBarnBody, buffers[MiniBarnBody] );
+    ceateObject( C, MiniBarnRoof, buffers[MiniBarnRoof] );
     createObject( C, Floor,     buffers[Floor]);
 }
 
@@ -369,25 +389,41 @@ static void display( void )
 
 		// send all the transformation data
 		switch( obj ) {
+
         case SiloBody:
-            setTransforms( program, silo_s, ang, silo_x );
+            setTransforms( program, siloBody_s, ang, siloBody_x );
 			break;
         case SiloRoof:
-            //TODO
-            setTransforms( program, cyl_s, ang, cyl_x );
+            setTransforms( program, siloRoof_s, ang, siloRoof_x );
 			break;
+
+
         case MainBarnBody:
-            setTransforms( program, barn_s, ang, barn_x );
+            setTransforms( program, mainBarnBody_s, ang, mainBarnBody_x );
 			break;
         case MainBarnRoof:
-            setTransforms( program, roof_s, ang, roof_x );
+            setTransforms( program, mainBarnRoof_s, ang, mainBarnRoof_x );
 			break;
+
+
         case AltBarnBody:
-            //TODO
-            setTransforms( program, cyl_s, ang, cyl_x );
+            setTransforms( program, altBarnBody_s, ang, altBarnBody_x );
 			break;
+        case AltBarnRoof:
+            setTransforms( program, altBarnRoof_s, ang, altBarnRoof_x );
+			break;
+
+
+        case MiniBarnBody:
+            setTransforms( program, miniBarnBody_s, ang, miniBarnBody_x );
+			break;
+        case MiniBarnRoof:
+            setTransforms( program, miniBarnRoof_s, ang, miniBarnRoof_x );
+			break;
+
+
         case Floor:
-            setTransforms( program, roof_s, ang, roof_x );
+            setTransforms( program, road_s, road_r, road_x );
 			break;
 
 		}

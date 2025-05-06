@@ -44,6 +44,9 @@ const char *objects[ N_OBJECTS ] = {
     , "MainBarnBody"
     , "MainBarnRoof"
     , "AltBarnBody"
+    , "AltBarnRoof"
+    , "MiniBarnBody"
+    , "MiniBarnRoof"
     , "Floor"
 };
 
@@ -157,6 +160,14 @@ void makeCone( Canvas &C )
 }
 
 ///
+/// makeCone() - create the cone body
+///
+void makePyramid( Canvas &C )
+{
+	
+}
+
+///
 /// makeTriangularPrism() - create a triangular prism????
 ///
 void makeTriangularPrism( Canvas &C )
@@ -261,6 +272,9 @@ void createObject( Canvas &C, Object obj, BufferSet &buf )
     case MainBarnBody:  makeCylinder( C );  break;
     case MainBarnRoof:  makeCone( C );      break;
     case AltBarnBody:   makeCube( C );      break;
+    case AltBarnRoof:   makeTriangularPrism( C );      break;
+    case MiniBarnBody:  makeCube( C );      break;
+    case MiniBarnRoof:  makePyramid( C );      break;
     case Floor:         makeQuad( C );      break;
 
 	default:

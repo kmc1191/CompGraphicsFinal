@@ -249,9 +249,18 @@ void setMaterials( GLuint program, Object obj, bool usingTextures )
         glUniform1f( loc, specExp[1] );
 		break;
     case MainBarnRoof:
-        glUniform1f( loc, specExp[0] );
+        glUniform1f( loc, specExp[1] );
 		break;
     case AltBarnBody:
+        glUniform1f( loc, specExp[0] );
+		break;
+    case AltBarnRoof: 
+        glUniform1f( loc, specExp[0] );
+		break;
+    case MiniBarnBody: 
+        glUniform1f( loc, specExp[0] );
+		break;
+    case MiniBarnRoof: 
         glUniform1f( loc, specExp[0] );
 		break;
     case Floor:
@@ -273,100 +282,148 @@ void setMaterials( GLuint program, Object obj, bool usingTextures )
         switch( obj ) {
             case SiloBody:
                 glActiveTexture(GL_TEXTURE0);  // Texture unit 0
-                    glBindTexture(GL_TEXTURE_2D, dirtyTileTexture);  // Front texture
-                    texLoc = getUniformLoc(program, "mainTex");
-                    if (texLoc >= 0) {
-                            glUniform1i(texLoc, 0);  // Set the sampler to texture unit 0
-                    }
+                glBindTexture(GL_TEXTURE_2D, dirtyTileTexture);  // Front texture
+                texLoc = getUniformLoc(program, "mainTex");
+                if (texLoc >= 0) {
+                        glUniform1i(texLoc, 0);  // Set the sampler to texture unit 0
+                }
 
-                    //Send same texture for back
-                    glActiveTexture(GL_TEXTURE1);  // Texture unit 1
-                    glBindTexture(GL_TEXTURE_2D, dirtyTileTexture);  // Back texture
-                    texLoc = getUniformLoc(program, "backTex");
-                    if (texLoc >= 0) {
-                    glUniform1i(texLoc, 1);  // Set the sampler to texture unit 1
-                    }
-                    break;
+                //Send same texture for back
+                glActiveTexture(GL_TEXTURE1);  // Texture unit 1
+                glBindTexture(GL_TEXTURE_2D, dirtyTileTexture);  // Back texture
+                texLoc = getUniformLoc(program, "backTex");
+                if (texLoc >= 0) {
+                glUniform1i(texLoc, 1);  // Set the sampler to texture unit 1
+                }
+                break;
             case SiloRoof:
                 glActiveTexture(GL_TEXTURE0);  // Texture unit 0
-                    glBindTexture(GL_TEXTURE_2D, metalRoofTexture);  // Front texture
-                    texLoc = getUniformLoc(program, "mainTex");
-                    if (texLoc >= 0) {
-                            glUniform1i(texLoc, 0);  // Set the sampler to texture unit 0
-                    }
+                glBindTexture(GL_TEXTURE_2D, metalRoofTexture);  // Front texture
+                texLoc = getUniformLoc(program, "mainTex");
+                if (texLoc >= 0) {
+                        glUniform1i(texLoc, 0);  // Set the sampler to texture unit 0
+                }
 
-                    //Send same texture for back
-                    glActiveTexture(GL_TEXTURE1);  // Texture unit 1
-                    glBindTexture(GL_TEXTURE_2D, metalRoofTexture);  // Back texture
-                    texLoc = getUniformLoc(program, "backTex");
-                    if (texLoc >= 0) {
-                    glUniform1i(texLoc, 1);  // Set the sampler to texture unit 1
-                    }
-                    break;
+                //Send same texture for back
+                glActiveTexture(GL_TEXTURE1);  // Texture unit 1
+                glBindTexture(GL_TEXTURE_2D, metalRoofTexture);  // Back texture
+                texLoc = getUniformLoc(program, "backTex");
+                if (texLoc >= 0) {
+                glUniform1i(texLoc, 1);  // Set the sampler to texture unit 1
+                }
+                break;
             case MainBarnBody:
                 glActiveTexture(GL_TEXTURE0);  // Texture unit 0
-                    glBindTexture(GL_TEXTURE_2D, brickTexture);  // Front texture
-                    texLoc = getUniformLoc(program, "mainTex");
-                    if (texLoc >= 0) {
-                            glUniform1i(texLoc, 0);  // Set the sampler to texture unit 0
-                    }
+                glBindTexture(GL_TEXTURE_2D, brickTexture);  // Front texture
+                texLoc = getUniformLoc(program, "mainTex");
+                if (texLoc >= 0) {
+                        glUniform1i(texLoc, 0);  // Set the sampler to texture unit 0
+                }
 
-                    //Send same texture for back
-                    glActiveTexture(GL_TEXTURE1);  // Texture unit 1
-                    glBindTexture(GL_TEXTURE_2D, brickTexture);  // Back texture
-                    texLoc = getUniformLoc(program, "backTex");
-                    if (texLoc >= 0) {
-                    glUniform1i(texLoc, 1);  // Set the sampler to texture unit 1
-                    }
-                    break;
+                //Send same texture for back
+                glActiveTexture(GL_TEXTURE1);  // Texture unit 1
+                glBindTexture(GL_TEXTURE_2D, brickTexture);  // Back texture
+                texLoc = getUniformLoc(program, "backTex");
+                if (texLoc >= 0) {
+                glUniform1i(texLoc, 1);  // Set the sampler to texture unit 1
+                }
+                break;
             case MainBarnRoof:
                 glActiveTexture(GL_TEXTURE0);  // Texture unit 0
-                    glBindTexture(GL_TEXTURE_2D, roofTexture);  // Front texture
-                    texLoc = getUniformLoc(program, "mainTex");
-                    if (texLoc >= 0) {
-                            glUniform1i(texLoc, 0);  // Set the sampler to texture unit 0
-                    }
+                glBindTexture(GL_TEXTURE_2D, roofTexture);  // Front texture
+                texLoc = getUniformLoc(program, "mainTex");
+                if (texLoc >= 0) {
+                        glUniform1i(texLoc, 0);  // Set the sampler to texture unit 0
+                }
 
-                    //Send same texture for back
-                    glActiveTexture(GL_TEXTURE1);  // Texture unit 1
-                    glBindTexture(GL_TEXTURE_2D, roofTexture);  // Back texture
-                    texLoc = getUniformLoc(program, "backTex");
-                    if (texLoc >= 0) {
-                    glUniform1i(texLoc, 1);  // Set the sampler to texture unit 1
-                    }
-                    break;
+                //Send same texture for back
+                glActiveTexture(GL_TEXTURE1);  // Texture unit 1
+                glBindTexture(GL_TEXTURE_2D, roofTexture);  // Back texture
+                texLoc = getUniformLoc(program, "backTex");
+                if (texLoc >= 0) {
+                glUniform1i(texLoc, 1);  // Set the sampler to texture unit 1
+                }
+                break;
             case AltBarnBody:
                 glActiveTexture(GL_TEXTURE0);  // Texture unit 0
-                    glBindTexture(GL_TEXTURE_2D, redWoodTexture);  // Front texture
-                    texLoc = getUniformLoc(program, "mainTex");
-                    if (texLoc >= 0) {
-                            glUniform1i(texLoc, 0);  // Set the sampler to texture unit 0
-                    }
+                glBindTexture(GL_TEXTURE_2D, redWoodTexture);  // Front texture
+                texLoc = getUniformLoc(program, "mainTex");
+                if (texLoc >= 0) {
+                        glUniform1i(texLoc, 0);  // Set the sampler to texture unit 0
+                }
 
-                    //Send same texture for back
-                    glActiveTexture(GL_TEXTURE1);  // Texture unit 1
-                    glBindTexture(GL_TEXTURE_2D, redWoodTexture);  // Back texture
-                    texLoc = getUniformLoc(program, "backTex");
-                    if (texLoc >= 0) {
-                    glUniform1i(texLoc, 1);  // Set the sampler to texture unit 1
-                    }
-                    break;
+                //Send same texture for back
+                glActiveTexture(GL_TEXTURE1);  // Texture unit 1
+                glBindTexture(GL_TEXTURE_2D, redWoodTexture);  // Back texture
+                texLoc = getUniformLoc(program, "backTex");
+                if (texLoc >= 0) {
+                glUniform1i(texLoc, 1);  // Set the sampler to texture unit 1
+                }
+                break;
+            case AltBarnRoof: 
+                glActiveTexture(GL_TEXTURE0);  // Texture unit 0
+                glBindTexture(GL_TEXTURE_2D, roofTexture);  // Front texture
+                texLoc = getUniformLoc(program, "mainTex");
+                if (texLoc >= 0) {
+                        glUniform1i(texLoc, 0);  // Set the sampler to texture unit 0
+                }
+
+                //Send same texture for back
+                glActiveTexture(GL_TEXTURE1);  // Texture unit 1
+                glBindTexture(GL_TEXTURE_2D, roofTexture);  // Back texture
+                texLoc = getUniformLoc(program, "backTex");
+                if (texLoc >= 0) {
+                glUniform1i(texLoc, 1);  // Set the sampler to texture unit 1
+                }
+                break;
+            case MiniBarnBody: 
+                glActiveTexture(GL_TEXTURE0);  // Texture unit 0
+                glBindTexture(GL_TEXTURE_2D, redWoodTexture);  // Front texture
+                texLoc = getUniformLoc(program, "mainTex");
+                if (texLoc >= 0) {
+                        glUniform1i(texLoc, 0);  // Set the sampler to texture unit 0
+                }
+
+                //Send same texture for back
+                glActiveTexture(GL_TEXTURE1);  // Texture unit 1
+                glBindTexture(GL_TEXTURE_2D, redWoodTexture);  // Back texture
+                texLoc = getUniformLoc(program, "backTex");
+                if (texLoc >= 0) {
+                glUniform1i(texLoc, 1);  // Set the sampler to texture unit 1
+                }
+                break;
+            case MiniBarnRoof: 
+                glActiveTexture(GL_TEXTURE0);  // Texture unit 0
+                glBindTexture(GL_TEXTURE_2D, roofTexture);  // Front texture
+                texLoc = getUniformLoc(program, "mainTex");
+                if (texLoc >= 0) {
+                        glUniform1i(texLoc, 0);  // Set the sampler to texture unit 0
+                }
+
+                //Send same texture for back
+                glActiveTexture(GL_TEXTURE1);  // Texture unit 1
+                glBindTexture(GL_TEXTURE_2D, roofTexture);  // Back texture
+                texLoc = getUniformLoc(program, "backTex");
+                if (texLoc >= 0) {
+                glUniform1i(texLoc, 1);  // Set the sampler to texture unit 1
+                }
+                break;
             case Floor:
                 glActiveTexture(GL_TEXTURE0);  // Texture unit 0
-                    glBindTexture(GL_TEXTURE_2D, roadTexture);  // Front texture
-                    texLoc = getUniformLoc(program, "mainTex");
-                    if (texLoc >= 0) {
-                            glUniform1i(texLoc, 0);  // Set the sampler to texture unit 0
-                    }
+                glBindTexture(GL_TEXTURE_2D, roadTexture);  // Front texture
+                texLoc = getUniformLoc(program, "mainTex");
+                if (texLoc >= 0) {
+                        glUniform1i(texLoc, 0);  // Set the sampler to texture unit 0
+                }
 
-                    //Send same texture for back
-                    glActiveTexture(GL_TEXTURE1);  // Texture unit 1
-                    glBindTexture(GL_TEXTURE_2D, roadTexture);  // Back texture
-                    texLoc = getUniformLoc(program, "backTex");
-                    if (texLoc >= 0) {
-                    glUniform1i(texLoc, 1);  // Set the sampler to texture unit 1
-                    }
-                    break;
+                //Send same texture for back
+                glActiveTexture(GL_TEXTURE1);  // Texture unit 1
+                glBindTexture(GL_TEXTURE_2D, roadTexture);  // Back texture
+                texLoc = getUniformLoc(program, "backTex");
+                if (texLoc >= 0) {
+                glUniform1i(texLoc, 1);  // Set the sampler to texture unit 1
+                }
+                break;
         }
 
 
