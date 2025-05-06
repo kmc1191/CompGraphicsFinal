@@ -1,0 +1,76 @@
+#!/bin/sh
+#
+# compilation script for Mac systems
+#
+
+#
+# The 'libhome' variable should point to where you have installed
+# the GLFW and GLEW libraries. If you're using a package manager,
+# these are the default locations:
+#
+#  Homebrew:  /opt/homebrew on Apple silicon, /usr/local on Intel
+#  MacPorts:  /opt/local
+#
+# If you've installed GLEW and/or GLFW somewhere else, you'll have
+# to define this accordingly.
+#
+libhome="/opt/local"
+
+#
+# To use SOIL, you may need to add another "-I" option to the 'incs'
+# macro, another "-L" option to the 'lib's macro, and you will need
+# to add "-lSOIL" at the end of the 'libs' macro.
+#
+
+incs="-I$libhome/include"
+libs="-L$libhome/lib -lglfw -lglew"
+
+#
+# This variable contains the list of frameworks you'll need to
+# compile and link against.
+#
+# Add "-framework CoreFoundations" if you are using SOIL.
+#
+
+fmwks="-framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo"
+
+#
+# Set the target; we assume that a target of "foo" will
+# be compiled from either foo.c or foo.cpp
+#
+
+target="main"
+
+#
+# Turn off the "OpenGL is deprecated!" hysteria from the compiler
+#
+flags="-DGL_SILENCE_DEPRECATION"
+
+#
+# Determine which language we're compiling
+#
+
+if [ -f $target.c ]
+then
+	cmd="gcc -std=c99"
+	files="*.c"
+else
+	cmd="g++"
+	files="*.cpp"
+fi
+
+#
+# If there were command-line arguments, use them to override the default set.
+#
+
+if [ $# -gt 0 ]
+then
+	args="$*"
+else
+	args="-ggdb -o $target"
+fi
+
+# turn on tracing so we see the compilation command
+set -x
+
+$cmd $incs $flags $args $files $libs $fmwks
